@@ -6,7 +6,9 @@ import com.test.weathertest.util.HttpUtil;
 import com.test.weathertest.util.Utility;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -27,6 +29,8 @@ public class WeatherActivity extends Activity{
 	private TextView currentDateText;
 	private String spName = "SharedPreferenceWeather";
 	private Button clearPrefs;
+	private Button switchCity;
+	private Button refreshWeather;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO 自动生成的方法存根
@@ -61,8 +65,31 @@ public class WeatherActivity extends Activity{
 				editor.commit();
 			}
 		});
+		switchCity = (Button) findViewById(R.id.switch_city);
+		refreshWeather = (Button) findViewById(R.id.refresh_weather);
+		switchCity.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				Intent intent = new Intent(WeatherActivity.this,ChooseActivity.class);
+				intent.putExtra("from_weather_activity", true);
+				startActivity(intent);
+				finish();
+			}
+		});
+		refreshWeather.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO 自动生成的方法存根
+				publishText.setText("同步中......");
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+				String weatherCode = prefs.getString("weather_code", "");
+				if(!TextUtils.isEmpty(weatherCode)){
+					queryWeatherInfo(weatherCode);
+				}
+			}
+		});
 	}
-
 	private void showWeather() {
 		// TODO 自动生成的方法存根
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
