@@ -1,6 +1,7 @@
 package com.test.weathertest.activity;
 
 import com.test.weathertest.R;
+import com.test.weathertest.service.AutoUpdateService;
 import com.test.weathertest.util.HttpCallbackListener;
 import com.test.weathertest.util.HttpUtil;
 import com.test.weathertest.util.Utility;
@@ -89,6 +90,8 @@ public class WeatherActivity extends Activity{
 				}
 			}
 		});
+		Intent intent = new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 	private void showWeather() {
 		// TODO 自动生成的方法存根
